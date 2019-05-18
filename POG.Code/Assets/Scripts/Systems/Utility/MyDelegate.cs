@@ -16,7 +16,7 @@ public class MyDelegate
     public delegate T DelegateReturnDualParam<T, T1, T2>(T1 a_param1, T2 a_param2);
     public delegate void DelegateVoidParamList<T>(params T[] a_list);
 
-    public delegate void DelegateVoidTrippleParam<T1, T2, T3>(T1 a_param1, T2 a_param2, T3 a_param3);
+    public delegate void DelegateVoidTripleParam<T1, T2, T3>(T1 a_param1, T2 a_param2, T3 a_param3);
     public delegate T DelegateReturnTrippleParam<T, T1, T2, T3>(T1 a_param1, T2 a_param2, T3 a_param3);
 
     public delegate void DelegateVoidQuadParam<T1, T2, T3, T4>(T1 a_param1, T2 a_param2, T3 a_param3, T4 a_param4);
