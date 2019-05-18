@@ -20,8 +20,12 @@ public class Character
     public float _Health { get; private set; }
     public float _Fertility { get; private set; }
 
+    // Object
+    public GameObject _GameObject;
+
     // World Info
     private Vector3 mSpawnPosition;
+    private Vector3 mDestinationPosition;
 
     // Special
     private int mSoulScore;
@@ -36,21 +40,23 @@ public class Character
     private float mAliveTime = 0.0f;
 #endif
 
-    
-#region Constructors
+
+    #region Constructors
     /// <summary>
     /// Create a character.
     /// </summary>
-    /// // <param name="stateMachine">State Machine instance</param>
-    public Character(StateMachine stateMachine)
+    /// <param name="stateMachine">State Machine instance</param>
+    /// <param name="gameObject">World gameobject of this character</param>
+    public Character(GameObject gameObject)
     {
         _Speed = _Work = _Health = _Fertility = 0.5f;
 
         mSoulScore = 1;
 
-        mSpawnPosition = Vector3.zero;
+        mSpawnPosition = GetRandomDestination();
 
-        mStateMachine = stateMachine;
+        _GameObject = gameObject;
+        _GameObject.transform.position = mSpawnPosition;
 
         SubscribeListeners();
     }
@@ -63,8 +69,9 @@ public class Character
     /// <param name="health">Max health</param>
     /// <param name="work">Work rate</param>
     /// <param name="fertility">Fertility rate</param>
-    /// /// // <param name="stateMachine">State Machine instance</param>
-    public Character(float speed, float health, float work, float fertility, StateMachine stateMachine)
+    /// <param name="stateMachine">State Machine instance</param>
+    /// <param name="gameObject">World gameobject of this character</param>
+    public Character(float speed, float health, float work, float fertility, GameObject gameObject)
     {
         _Speed = speed;
         _Health = health;
@@ -73,9 +80,10 @@ public class Character
 
         mSoulScore = 1;
 
-        mSpawnPosition = Vector3.zero;
+        mSpawnPosition = GetRandomDestination();
 
-        mStateMachine = stateMachine;
+        _GameObject = gameObject;
+        _GameObject.transform.position = mSpawnPosition;
 
         SubscribeListeners();
     }
@@ -88,8 +96,9 @@ public class Character
     /// <param name="work">Work rate</param>
     /// <param name="fertility">Fertility rate</param>
     /// <param name="spawnPosition">Spawn poisition</param>
-    /// /// // <param name="stateMachine">State Machine instance</param>
-    public Character(float speed, float health, float work, float fertility, Vector3 spawnPosition, StateMachine stateMachine)
+    /// <param name="stateMachine">State Machine instance</param>
+    /// <param name="gameObject">World gameobject of this character</param>
+    public Character(float speed, float health, float work, float fertility, Vector3 spawnPosition, GameObject gameObject)
     {
         _Speed = speed;
         _Health = health;
@@ -100,13 +109,14 @@ public class Character
 
         mSpawnPosition = spawnPosition;
 
-        mStateMachine = stateMachine;
+        _GameObject = gameObject;
+        _GameObject.transform.position = mSpawnPosition;
 
         SubscribeListeners();
     }
 #endregion
 
-#region State Machine
+    #region State Machine
     private void SubscribeListeners()
     {
 #if ENABLE_DEBUG
@@ -117,6 +127,7 @@ public class Character
         StateMachine.OnUpdateState += OnUpdateState;
         StateMachine.OnExitState += OnExitState;
 
+        mStateMachine = new StateMachine();
         mStateMachine.ChangeState((int)eCharacterStates.Idle);
     }
 
@@ -136,6 +147,7 @@ public class Character
                 break;
 
             case eCharacterStates.Walk:
+                mDestinationPosition = GetRandomDestination();
                 break;
 
             case eCharacterStates.Work:
@@ -159,13 +171,14 @@ public class Character
                 break;
 
             case eCharacterStates.Walk:
+                _GameObject.transform.position = Vector3.MoveTowards(_GameObject.transform.position, mDestinationPosition, Time.deltaTime * 2.0f);
                 break;
 
             case eCharacterStates.Work:
                 break;
         }
 
-        _Health -= (deltaTime / 10.0f);
+        _Health -= (deltaTime / 20.0f);
         if (_Health <= 0.0f)
         {
             mStateMachine.ChangeState((int)eCharacterStates.Dead);
@@ -186,7 +199,7 @@ public class Character
         eCharacterStates currentCharState = (eCharacterStates)currentState;
         eCharacterStates newCharState = (eCharacterStates)newState;
 
-        Debug.Log("Current State: " + currentCharState + " New State: " + newCharState);
+        // Debug.Log("Current State: " + currentCharState + " New State: " + newCharState);
 
         // Close out old state
         switch (currentCharState)
@@ -195,6 +208,7 @@ public class Character
                 break;
 
             case eCharacterStates.Walk:
+                mDestinationPosition = mSpawnPosition;
                 break;
 
             case eCharacterStates.Work:
@@ -207,16 +221,35 @@ public class Character
         StateMachine.OnEnterState -= OnEnterState;
         StateMachine.OnUpdateState -= OnUpdateState;
         StateMachine.OnExitState -= OnExitState;
-    }
-#endregion
 
-#region Destructors
+        mStateMachine = null;
+    }
+    #endregion
+
+    #region Movement
+    private Vector3 GetRandomDestination()
+    {
+        return new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f), 0.0f);
+    }
+
+    private Vector3 GetRandomMoveDirection()
+    {
+        return new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0.0f);
+    }
+    #endregion
+
+    public void LateUpdate()
+    {
+        mStateMachine.LateUpdate();
+    }
+
+    #region Destructors
     public void Destroy()
     {
 #if ENABLE_DEBUG
         Debug.Log(Time.time - mAliveTime);
 #endif
-
+        _GameObject = null;
         UnSubscribeListeners();
         mStateMachine = null;
     }

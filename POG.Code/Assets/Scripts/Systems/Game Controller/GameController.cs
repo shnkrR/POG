@@ -6,26 +6,24 @@ public class GameController : MonoBehaviour
 {
     private CharacterManager mCharacterManager;
 
-    private StateMachine mStateMachine;
-
 
     private void Awake()
     {
-        mStateMachine = new StateMachine();        
+        
     }
 
     private void Start()
     {
-        mCharacterManager = new CharacterManager(mStateMachine);
+        mCharacterManager = new CharacterManager();
     }
 
     private void Update()
     {
-        mCharacterManager.Update();
+        
     }
 
     private void LateUpdate()
     {
-        mStateMachine.LateUpdate();
+        mCharacterManager.LateUpdate();
     }
 }
