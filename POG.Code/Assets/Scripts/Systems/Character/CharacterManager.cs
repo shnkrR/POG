@@ -12,14 +12,14 @@ public class CharacterManager
 
     private List<GameObject> mCharacterObjectPool;
 
-    private List<Character> mCharacter;
+    private List<Character> mCharacters;
 
 
     public CharacterManager()
     {
         InitCharacterObjectPool();
 
-        mCharacter = new List<Character>();
+        mCharacters = new List<Character>();
 
         SpawnCharacter();
     }
@@ -77,14 +77,14 @@ public class CharacterManager
     {
         Character character = new Character(GetCharacterObject());
         character.OnCharacterDead += OnCharacterDead;
-        mCharacter.Add(character);
+        mCharacters.Add(character);
     }
 
     public void LateUpdate()
     {
-        for (int i = 0; i < mCharacter.Count; i++)
+        for (int i = 0; i < mCharacters.Count; i++)
         {
-            mCharacter[i].LateUpdate();
+            mCharacters[i].LateUpdate();
         }
     }
 
@@ -92,7 +92,7 @@ public class CharacterManager
     {
         if (character != null)
         {
-            mCharacter.Remove(character);
+            mCharacters.Remove(character);
             ResetCharacterObject(ref character._GameObject);
             character.OnCharacterDead -= OnCharacterDead;
             character.Destroy();
@@ -104,12 +104,12 @@ public class CharacterManager
 
     ~CharacterManager()
     {
-        for (int i = 0; i < mCharacter.Count; i++)
+        for (int i = 0; i < mCharacters.Count; i++)
         {
-            mCharacter[i] = null;
+            mCharacters[i] = null;
         }
 
-        mCharacter.Clear();
-        mCharacter = null;
+        mCharacters.Clear();
+        mCharacters = null;
     }
 }

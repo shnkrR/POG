@@ -6,6 +6,8 @@ TagManager:
   tags:
   - UnusedCharacter
   - Character
+  - UnusedBuilding
+  - Building
   layers:
   - Default
   - TransparentFX

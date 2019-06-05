@@ -6,6 +6,8 @@ public class GameController : MonoBehaviour
 {
     private CharacterManager mCharacterManager;
 
+    private BuildingsManager mBuildingsManager;
+
 
     private void Awake()
     {
@@ -15,6 +17,8 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         mCharacterManager = new CharacterManager();
+
+        mBuildingsManager = new BuildingsManager();
     }
 
     private void Update()
@@ -25,5 +29,7 @@ public class GameController : MonoBehaviour
     private void LateUpdate()
     {
         mCharacterManager.LateUpdate();
+
+        mBuildingsManager.LateUpdate();
     }
 }
