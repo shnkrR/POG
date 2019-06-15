@@ -5,7 +5,7 @@ using UnityEngine;
 public class BuildingsManager
 {
     public const int BUILDING_POOL_START_SIZE = 10;
-    public const string BUILDING_OBJECT_PATH = "Buildings/Building_Generic";
+    public const string BUILDING_OBJECT_PATH = "Prefabs/Buildings/Building_Generic";
 
 
     private GameObject mBuildingObjectTemplate;

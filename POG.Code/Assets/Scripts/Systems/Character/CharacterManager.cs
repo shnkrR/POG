@@ -4,7 +4,7 @@ using UnityEngine;
 public class CharacterManager
 {
     public const int CHARACTER_POOL_START_SIZE = 15;
-    public const string CHARACTER_OBJECT_PATH = "Characters/Character_Generic";
+    public const string CHARACTER_OBJECT_PATH = "Prefabs/Characters/Character_Generic";
 
 
     private GameObject mCharacterObjectTemplate;

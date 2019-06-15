@@ -229,7 +229,9 @@ public class Character
     #region Movement
     private Vector3 GetRandomDestination()
     {
-        return new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f), 0.0f);
+        return new Vector3( Random.Range(GameController._BottomLeftWorldBounds.x, GameController._TopRightWorldBounds.x),
+                            GameController._TopRightWorldBounds.y,
+                            Random.Range(GameController._BottomLeftWorldBounds.z, GameController._TopRightWorldBounds.z));
     }
 
     private Vector3 GetRandomMoveDirection()

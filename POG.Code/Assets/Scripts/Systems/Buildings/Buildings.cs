@@ -23,6 +23,7 @@ public class Buildings
 
     // World Info
     private Vector3 mPosition;
+    private Vector3 mRotation;
 
 
     #region Constructors
@@ -37,6 +38,8 @@ public class Buildings
         _GameObject = gameObject;
         _GameObject.transform.position = GetRandomPosition();
         mPosition = _GameObject.transform.position;
+        mRotation = new Vector3(0.0f, Random.Range(30.0f, 60.0f), 0.0f);
+        _GameObject.transform.Rotate(mRotation);
     }
 
 
@@ -53,6 +56,8 @@ public class Buildings
         _GameObject = gameObject;
         _GameObject.transform.position = GetRandomPosition();
         mPosition = _GameObject.transform.position;
+        mRotation = new Vector3(0.0f, Random.Range(30.0f, 60.0f), 0.0f);
+        _GameObject.transform.Rotate(mRotation);
     }
     #endregion
 
@@ -63,7 +68,9 @@ public class Buildings
 
     private Vector3 GetRandomPosition()
     {
-        return new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f), 0.0f);
+        return new Vector3(Random.Range(GameController._BottomLeftWorldBounds.x, GameController._TopRightWorldBounds.x),
+                            GameController._TopRightWorldBounds.y,
+                            Random.Range(GameController._BottomLeftWorldBounds.z, GameController._TopRightWorldBounds.z));
     }
 
     #region Destructors
