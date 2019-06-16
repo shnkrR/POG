@@ -14,10 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CharacterInfo:
   - _Meta:
-      _PrefabName: 
-      _SoulScore: 0
+      _PrefabName: Average Joe
+      _SoulScore: 1
     _Attributes:
-      _Speed: 0
-      _Work: 0
-      _Health: 0
-      _Fertility: 0
+      _Speed: 0.5
+      _Work: 0.5
+      _Health: 0.5
+      _Fertility: 0.5
+  - _Meta:
+      _PrefabName: Fast Movers
+      _SoulScore: 2
+    _Attributes:
+      _Speed: 0.8
+      _Work: 0.4
+      _Health: 0.3
+      _Fertility: 0.5
