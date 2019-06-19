@@ -15,8 +15,10 @@ public class Buildings
 
 
     // Attributes
-    public float _TimeRequiredInBuilding { get; private set; }
-    public int _Capacity { get; private set; }
+    public float _TimeRequiredInBuilding { get { return mAttributes._TimeRequiredInBuilding; } private set { mAttributes._TimeRequiredInBuilding = value; } }
+    public int _Capacity { get { return mAttributes._Capacity; } private set { mAttributes._Capacity = value; } }
+
+    private BuildingInfoData.BuildingAttributes mAttributes;
 
     // Object
     public GameObject _GameObject;
@@ -33,6 +35,8 @@ public class Buildings
     /// <param name="gameObject">World gameobject of this building</param>
     public Buildings(GameObject gameObject)
     {
+        mAttributes = new BuildingInfoData.BuildingAttributes();
+
         _TimeRequiredInBuilding = 5.0f;
 
         _GameObject = gameObject;
@@ -50,6 +54,8 @@ public class Buildings
     /// <param name="capacity">Max building capacity</param>
     public Buildings(float timeRequiredInBuilding, int capacity, GameObject gameObject)
     {
+        mAttributes = new BuildingInfoData.BuildingAttributes();
+
         _TimeRequiredInBuilding = timeRequiredInBuilding;
         _Capacity = capacity;
 

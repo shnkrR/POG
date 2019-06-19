@@ -15,10 +15,12 @@ public class Character
 
 
     // Attributes
-    public float _Speed { get; private set; }
-    public float _Work { get; private set; }
-    public float _Health { get; private set; }
-    public float _Fertility { get; private set; }
+    public float _Speed { get { return mAttributes._Speed; } private set { mAttributes._Speed = value; } }
+    public float _Work { get { return mAttributes._Work; } private set { mAttributes._Work = value; } }
+    public float _Health { get { return mAttributes._Health; } private set { mAttributes._Health = value; } }
+    public float _Fertility { get { return mAttributes._Fertility; } private set { mAttributes._Fertility = value; } }
+
+    private CharacterInfoData.CharacterAttributes mAttributes;
 
     // Object
     public GameObject _GameObject;
@@ -28,7 +30,9 @@ public class Character
     private Vector3 mDestinationPosition;
 
     // Special
-    private int mSoulScore;
+    public int mSoulScore { get { return mMeta._SoulScore; } private set { mMeta._SoulScore = value; } }
+
+    private CharacterInfoData.CharacterMeta mMeta;
 
     // State Machine
     private StateMachine mStateMachine;
@@ -49,6 +53,9 @@ public class Character
     /// <param name="gameObject">World gameobject of this character</param>
     public Character(GameObject gameObject)
     {
+        mAttributes = new CharacterInfoData.CharacterAttributes();
+        mMeta = new CharacterInfoData.CharacterMeta();
+
         _Speed = _Work = _Health = _Fertility = 0.5f;
 
         mSoulScore = 1;
@@ -73,6 +80,9 @@ public class Character
     /// <param name="gameObject">World gameobject of this character</param>
     public Character(float speed, float health, float work, float fertility, GameObject gameObject)
     {
+        mAttributes = new CharacterInfoData.CharacterAttributes();
+        mMeta = new CharacterInfoData.CharacterMeta();
+
         _Speed = speed;
         _Health = health;
         _Work = work;
@@ -100,6 +110,9 @@ public class Character
     /// <param name="gameObject">World gameobject of this character</param>
     public Character(float speed, float health, float work, float fertility, Vector3 spawnPosition, GameObject gameObject)
     {
+        mAttributes = new CharacterInfoData.CharacterAttributes();
+        mMeta = new CharacterInfoData.CharacterMeta();
+
         _Speed = speed;
         _Health = health;
         _Work = work;

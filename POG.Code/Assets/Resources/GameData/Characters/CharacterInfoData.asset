@@ -29,3 +29,19 @@ MonoBehaviour:
       _Work: 0.4
       _Health: 0.3
       _Fertility: 0.5
+  - _Meta:
+      _PrefabName: Health Hondos
+      _SoulScore: 2
+    _Attributes:
+      _Speed: 0.4
+      _Work: 0.3
+      _Health: 0.8
+      _Fertility: 0.5
+  - _Meta:
+      _PrefabName: Casanovas
+      _SoulScore: 2
+    _Attributes:
+      _Speed: 0.6
+      _Work: 0.3
+      _Health: 0.3
+      _Fertility: 0.8
