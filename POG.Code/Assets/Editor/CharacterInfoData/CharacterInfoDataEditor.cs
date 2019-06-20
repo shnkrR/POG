@@ -35,7 +35,7 @@ public class CharacterInfoDataEditor : EditorWindow
 
     private static void Init()
     {
-        mCharacterInfoData = null;
+        //mCharacterInfoData = null;
 
         if (Selection.activeObject != null)
         {
@@ -97,13 +97,13 @@ public class CharacterInfoDataEditor : EditorWindow
 
             if (mCharacterFoldouts[i])
             {
-                EditorGUILayout.LabelField("Meta");
+                EditorGUILayout.LabelField("Meta", EditorStyles.boldLabel);
                 mCharacterInfoData._CharacterInfo[i]._Meta._PrefabName = EditorGUILayout.TextField("Prefab Name: ", mCharacterInfoData._CharacterInfo[i]._Meta._PrefabName);
                 mCharacterInfoData._CharacterInfo[i]._Meta._SoulScore = EditorGUILayout.IntField("Soul Score: ", mCharacterInfoData._CharacterInfo[i]._Meta._SoulScore);
 
                 EditorGUILayout.Space();
 
-                EditorGUILayout.LabelField("Attributes");
+                EditorGUILayout.LabelField("Attributes", EditorStyles.boldLabel);
                 mCharacterInfoData._CharacterInfo[i]._Attributes._Speed = EditorGUILayout.FloatField("Speed: ", mCharacterInfoData._CharacterInfo[i]._Attributes._Speed);
                 mCharacterInfoData._CharacterInfo[i]._Attributes._Work = EditorGUILayout.FloatField("Work: ", mCharacterInfoData._CharacterInfo[i]._Attributes._Work);
                 mCharacterInfoData._CharacterInfo[i]._Attributes._Health = EditorGUILayout.FloatField("Health: ", mCharacterInfoData._CharacterInfo[i]._Attributes._Health);

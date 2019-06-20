@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CharacterInfo:
   - _Meta:
-      _PrefabName: Average Joe
+      _PrefabName: Average Joes
       _SoulScore: 1
     _Attributes:
       _Speed: 0.5
@@ -30,7 +30,7 @@ MonoBehaviour:
       _Health: 0.3
       _Fertility: 0.5
   - _Meta:
-      _PrefabName: Health Hondos
+      _PrefabName: Healthy Hondos
       _SoulScore: 2
     _Attributes:
       _Speed: 0.4

@@ -78,7 +78,7 @@ public class Character
     /// <param name="fertility">Fertility rate</param>
     /// <param name="stateMachine">State Machine instance</param>
     /// <param name="gameObject">World gameobject of this character</param>
-    public Character(float speed, float health, float work, float fertility, GameObject gameObject)
+    public Character(float speed, float health, float work, float fertility, int soulScore, GameObject gameObject)
     {
         mAttributes = new CharacterInfoData.CharacterAttributes();
         mMeta = new CharacterInfoData.CharacterMeta();
@@ -88,7 +88,7 @@ public class Character
         _Work = work;
         _Fertility = fertility;
 
-        mSoulScore = 1;
+        mSoulScore = soulScore;
 
         mSpawnPosition = GetRandomDestination();
 
@@ -108,7 +108,7 @@ public class Character
     /// <param name="spawnPosition">Spawn poisition</param>
     /// <param name="stateMachine">State Machine instance</param>
     /// <param name="gameObject">World gameobject of this character</param>
-    public Character(float speed, float health, float work, float fertility, Vector3 spawnPosition, GameObject gameObject)
+    public Character(float speed, float health, float work, float fertility, int soulScore, Vector3 spawnPosition, GameObject gameObject)
     {
         mAttributes = new CharacterInfoData.CharacterAttributes();
         mMeta = new CharacterInfoData.CharacterMeta();
@@ -118,7 +118,7 @@ public class Character
         _Work = work;
         _Fertility = fertility;
 
-        mSoulScore = 1;
+        mSoulScore = soulScore;
 
         mSpawnPosition = spawnPosition;
 
@@ -151,7 +151,7 @@ public class Character
         eCharacterStates prevCharState = (eCharacterStates)prevState;
         eCharacterStates newCharState = (eCharacterStates)newState;
 
-        Debug.Log("Prev State: " + prevCharState + " New State: " + newCharState);
+        //Debug.Log("Prev State: " + prevCharState + " New State: " + newCharState);
 
         // Trigger new state
         switch (newCharState)

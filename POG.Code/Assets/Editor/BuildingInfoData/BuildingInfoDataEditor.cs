@@ -35,7 +35,7 @@ public class BuildingInfoDataEditor : EditorWindow
 
     private static void Init()
     {
-        mBuildingInfoData = null;
+        //mBuildingInfoData = null;
 
         if (Selection.activeObject != null)
         {
@@ -97,12 +97,12 @@ public class BuildingInfoDataEditor : EditorWindow
 
             if (mBuildingFoldouts[i])
             {
-                EditorGUILayout.LabelField("Meta");
+                EditorGUILayout.LabelField("Meta", EditorStyles.boldLabel);
                 mBuildingInfoData._BuildingInfo[i]._Meta._PrefabName = EditorGUILayout.TextField("Prefab Name: ", mBuildingInfoData._BuildingInfo[i]._Meta._PrefabName);
 
                 EditorGUILayout.Space();
 
-                EditorGUILayout.LabelField("Attributes");
+                EditorGUILayout.LabelField("Attributes", EditorStyles.boldLabel);
                 mBuildingInfoData._BuildingInfo[i]._Attributes._TimeRequiredInBuilding = EditorGUILayout.FloatField("Time Required In Building: ", mBuildingInfoData._BuildingInfo[i]._Attributes._TimeRequiredInBuilding);
                 mBuildingInfoData._BuildingInfo[i]._Attributes._Capacity = EditorGUILayout.IntField("Capacity: ", mBuildingInfoData._BuildingInfo[i]._Attributes._Capacity);
             }

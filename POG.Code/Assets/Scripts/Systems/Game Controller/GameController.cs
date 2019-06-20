@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour
 {
     private const int FLOOR_COLLISION_LAYER = 9;
     private const int FLOOR_COLLISION_RAY_DSITANCE = 500;
-    private const int BORDER_SAFE_AREA = 10;
+    private const int BORDER_SAFE_AREA = 50;
     
     public static Vector3 _BottomLeftWorldBounds { get; private set; }
     public static Vector3 _TopRightWorldBounds { get; private set; }
