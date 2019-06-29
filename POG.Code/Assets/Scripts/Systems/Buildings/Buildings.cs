@@ -12,13 +12,18 @@ public enum eBuildingType
 public class Buildings
 {
     public MyDelegate.DelegateVoidSingleParam<Buildings> OnBuildingDead;
+    public MyDelegate.DelegateVoid OnBuildingTaskComplete;
 
 
     // Attributes
     public float _TimeRequiredInBuilding { get { return mAttributes._TimeRequiredInBuilding; } private set { mAttributes._TimeRequiredInBuilding = value; } }
     public int _Capacity { get { return mAttributes._Capacity; } private set { mAttributes._Capacity = value; } }
 
+    // Meta
+    public eBuildingType _BuildingType { get { return mMeta._BuildingType; } private set { mMeta._BuildingType = value; } }
+
     private BuildingInfoData.BuildingAttributes mAttributes;
+    private BuildingInfoData.BuildingMeta mMeta;
 
     // Object
     public GameObject _GameObject;
@@ -27,17 +32,22 @@ public class Buildings
     private Vector3 mPosition;
     private Vector3 mRotation;
 
+    // Game Controller
+    private GameController mGameController;
+
 
     #region Constructors
     /// <summary>
     /// Create a building.
     /// </summary>
     /// <param name="gameObject">World gameobject of this building</param>
-    public Buildings(GameObject gameObject)
+    public Buildings(GameController gameController, GameObject gameObject, eBuildingType buildingType)
     {
         mAttributes = new BuildingInfoData.BuildingAttributes();
+        mMeta = new BuildingInfoData.BuildingMeta();
 
         _TimeRequiredInBuilding = 5.0f;
+        _Capacity = 10;
 
         _GameObject = gameObject;
         _GameObject.transform.position = GetRandomPosition();
@@ -52,9 +62,10 @@ public class Buildings
     /// </summary>
     /// <param name="timeRequiredInBuilding">Time required in seconds for the character in this building to complete it's action</param>
     /// <param name="capacity">Max building capacity</param>
-    public Buildings(float timeRequiredInBuilding, int capacity, GameObject gameObject)
+    public Buildings(GameController gameController, float timeRequiredInBuilding, int capacity, GameObject gameObject, eBuildingType buildingType)
     {
         mAttributes = new BuildingInfoData.BuildingAttributes();
+        mMeta = new BuildingInfoData.BuildingMeta();
 
         _TimeRequiredInBuilding = timeRequiredInBuilding;
         _Capacity = capacity;
@@ -78,6 +89,13 @@ public class Buildings
                             GameController._TopRightWorldBounds.y,
                             Random.Range(GameController._BottomLeftWorldBounds.z, GameController._TopRightWorldBounds.z));
     }
+
+    #region Tasks
+    public void StartTask()
+    {
+
+    }
+    #endregion
 
     #region Destructors
     public void Destroy()

@@ -11,9 +11,9 @@ public class GameController : MonoBehaviour
     public static Vector3 _BottomLeftWorldBounds { get; private set; }
     public static Vector3 _TopRightWorldBounds { get; private set; }
 
-    private CharacterManager mCharacterManager;
+    public CharacterManager _CharacterManager { get; private set; }
 
-    private BuildingsManager mBuildingsManager;
+    public BuildingsManager _BuildingsManager { get; private set; }
 
     private Camera mMainCamera;
 
@@ -27,9 +27,9 @@ public class GameController : MonoBehaviour
     {
         GetWorldBounds();
 
-        mCharacterManager = new CharacterManager();
+        _CharacterManager = new CharacterManager(this);
 
-        mBuildingsManager = new BuildingsManager();
+        _BuildingsManager = new BuildingsManager(this);
     }
 
     private void Update()
@@ -69,8 +69,8 @@ public class GameController : MonoBehaviour
 
     private void LateUpdate()
     {
-        mCharacterManager.LateUpdate();
+        _CharacterManager.LateUpdate();
 
-        mBuildingsManager.LateUpdate();
+        _BuildingsManager.LateUpdate();
     }
 }

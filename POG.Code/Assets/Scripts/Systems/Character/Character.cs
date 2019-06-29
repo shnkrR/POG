@@ -37,6 +37,11 @@ public class Character
     // State Machine
     private StateMachine mStateMachine;
 
+    // Game Controller
+    private GameController mGameController;
+
+    private Buildings mTargetBuilding;
+
     private float mTimeBetweenStates = 3.0f;
     private float mCurrentStateTime = 0.0f;
 
@@ -51,8 +56,10 @@ public class Character
     /// </summary>
     /// <param name="stateMachine">State Machine instance</param>
     /// <param name="gameObject">World gameobject of this character</param>
-    public Character(GameObject gameObject)
+    public Character(GameController gameController, GameObject gameObject)
     {
+        mGameController = gameController;
+
         mAttributes = new CharacterInfoData.CharacterAttributes();
         mMeta = new CharacterInfoData.CharacterMeta();
 
@@ -78,8 +85,10 @@ public class Character
     /// <param name="fertility">Fertility rate</param>
     /// <param name="stateMachine">State Machine instance</param>
     /// <param name="gameObject">World gameobject of this character</param>
-    public Character(float speed, float health, float work, float fertility, int soulScore, GameObject gameObject)
+    public Character(GameController gameController, float speed, float health, float work, float fertility, int soulScore, GameObject gameObject)
     {
+        mGameController = gameController;
+
         mAttributes = new CharacterInfoData.CharacterAttributes();
         mMeta = new CharacterInfoData.CharacterMeta();
 
@@ -108,8 +117,10 @@ public class Character
     /// <param name="spawnPosition">Spawn poisition</param>
     /// <param name="stateMachine">State Machine instance</param>
     /// <param name="gameObject">World gameobject of this character</param>
-    public Character(float speed, float health, float work, float fertility, int soulScore, Vector3 spawnPosition, GameObject gameObject)
+    public Character(GameController gameController, float speed, float health, float work, float fertility, int soulScore, Vector3 spawnPosition, GameObject gameObject)
     {
+        mGameController = gameController;
+
         mAttributes = new CharacterInfoData.CharacterAttributes();
         mMeta = new CharacterInfoData.CharacterMeta();
 
@@ -164,6 +175,7 @@ public class Character
                 break;
 
             case eCharacterStates.Work:
+                mTargetBuilding = GetClosestWorkplace();
                 break;
 
             case eCharacterStates.Dead:
@@ -184,10 +196,24 @@ public class Character
                 break;
 
             case eCharacterStates.Walk:
-                _GameObject.transform.position = Vector3.MoveTowards(_GameObject.transform.position, mDestinationPosition, Time.deltaTime * 2.0f);
+                _GameObject.transform.position = WalkTo(mDestinationPosition);
+                if (Vector3.Distance(_GameObject.transform.position, mDestinationPosition) > 0.1f)
+                {
+                    mStateMachine.ChangeState((int)eCharacterStates.Idle);
+                }
                 break;
 
             case eCharacterStates.Work:
+                if (Vector3.Distance(_GameObject.transform.position, mTargetBuilding._GameObject.transform.position) > 0.1f)
+                {
+                    _GameObject.transform.position = WalkTo(mTargetBuilding._GameObject.transform.position);
+                }
+                else
+                {
+                    _GameObject.SetActive(false);
+                    mTargetBuilding.StartTask();
+                    mTargetBuilding.OnBuildingTaskComplete += OnTaskComplete;
+                }
                 break;
         }
 
@@ -198,11 +224,14 @@ public class Character
         }
         else
         {
-            mCurrentStateTime += deltaTime;
-            if (mCurrentStateTime >= mTimeBetweenStates)
+            if (currentCharState == eCharacterStates.Idle)
             {
-                int newState = Random.Range(0, (int)eCharacterStates.Dead);
-                mStateMachine.ChangeState(newState);
+                mCurrentStateTime += deltaTime;
+                if (mCurrentStateTime >= mTimeBetweenStates)
+                {
+                    int newState = Random.Range(0, (int)eCharacterStates.Dead);
+                    mStateMachine.ChangeState(newState);
+                }
             }
         }
     }
@@ -225,6 +254,8 @@ public class Character
                 break;
 
             case eCharacterStates.Work:
+                _GameObject.SetActive(true);
+                mTargetBuilding.OnBuildingTaskComplete -= OnTaskComplete;
                 break;
         }
     }
@@ -250,6 +281,23 @@ public class Character
     private Vector3 GetRandomMoveDirection()
     {
         return new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0.0f);
+    }
+
+    private Vector3 WalkTo(Vector3 destination)
+    {
+        return Vector3.MoveTowards(_GameObject.transform.position, destination, Time.deltaTime * 2.0f);
+    }
+
+    private Buildings GetClosestWorkplace()
+    {
+        return mGameController._BuildingsManager.GetNearestBuildingOfType(_GameObject.transform.position, eBuildingType.WORK);
+    }
+    #endregion
+
+    #region Tasks
+    private void OnTaskComplete()
+    {
+
     }
     #endregion
 

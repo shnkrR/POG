@@ -14,6 +14,7 @@ public class BuildingInfoData : ScriptableObject
         {
             _Meta = new BuildingMeta();
             _Meta._PrefabName = "Prefab Name";
+            _Meta._BuildingType = eBuildingType.FERTILITY;
 
             _Attributes = new BuildingAttributes();
             _Attributes._TimeRequiredInBuilding = 0.0f;
@@ -32,6 +33,7 @@ public class BuildingInfoData : ScriptableObject
     public class BuildingMeta
     {
         public string _PrefabName;
+        public eBuildingType _BuildingType;
     }
 
 

@@ -19,8 +19,13 @@ public class CharacterManager
 
     private CharacterInfoData mCharacterInfoData;
 
-    public CharacterManager()
+    private GameController mGameController;
+
+
+    public CharacterManager(GameController gameController)
     {
+        mGameController = gameController;
+
         LoadCharacterStats();
         InitCharacterObjectPool();
 
@@ -100,7 +105,8 @@ public class CharacterManager
         CharacterInfoData.CharacterInfo charTypeToSpawn = mCharacterInfoData._CharacterInfo[Random.Range(0, mCharacterInfoData._CharacterInfo.Count)];
         if (charTypeToSpawn != null)
         {
-            Character character = new Character(charTypeToSpawn._Attributes._Speed,
+            Character character = new Character(mGameController,
+                                                charTypeToSpawn._Attributes._Speed,
                                                 charTypeToSpawn._Attributes._Health,
                                                 charTypeToSpawn._Attributes._Work,
                                                 charTypeToSpawn._Attributes._Fertility,

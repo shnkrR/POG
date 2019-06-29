@@ -19,9 +19,13 @@ public class BuildingsManager
 
     private BuildingInfoData mBuildingInfoData;
 
+    private GameController mGameController;
+
     
-    public BuildingsManager()
+    public BuildingsManager(GameController gameController)
     {
+        mGameController = gameController;
+
         LoadBuildingStats();
         InitBuildingObjectPool();
 
@@ -97,10 +101,26 @@ public class BuildingsManager
     {
         for (int i = 0; i < mBuildingInfoData._BuildingInfo.Count; i++)
         {
-            Buildings building = new Buildings(GetBuildingObject(mBuildingInfoData._BuildingInfo[i]._Meta._PrefabName));
+            Buildings building = new Buildings(mGameController, GetBuildingObject(mBuildingInfoData._BuildingInfo[i]._Meta._PrefabName), mBuildingInfoData._BuildingInfo[i]._Meta._BuildingType);
             building.OnBuildingDead += OnBuildingDead;
             mBuildings.Add(building);
         }
+    }
+
+    public Buildings GetNearestBuildingOfType(Vector3 toPosition, eBuildingType buildingType)
+    {
+        float distance = float.MaxValue;
+        int index = 0;
+        List<Buildings> filteredBuildings = mBuildings.FindAll(b => b._BuildingType == buildingType);
+        for (int i = 0; i < mBuildings.Count; i++)
+        {
+            if (distance > Vector3.Distance(mBuildings[i]._GameObject.transform.position, toPosition))
+            {
+                index = i;
+            }
+        }
+
+        return mBuildings[index];
     }
 
     public void LateUpdate()
