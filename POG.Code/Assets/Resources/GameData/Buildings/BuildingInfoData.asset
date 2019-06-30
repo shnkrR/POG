@@ -15,16 +15,19 @@ MonoBehaviour:
   _BuildingInfo:
   - _Meta:
       _PrefabName: Hospital
+      _BuildingType: 2
     _Attributes:
       _TimeRequiredInBuilding: 5
       _Capacity: 10
   - _Meta:
       _PrefabName: Office
+      _BuildingType: 1
     _Attributes:
       _TimeRequiredInBuilding: 30
       _Capacity: 20
   - _Meta:
       _PrefabName: Duplicator
+      _BuildingType: 0
     _Attributes:
       _TimeRequiredInBuilding: 15
       _Capacity: 5

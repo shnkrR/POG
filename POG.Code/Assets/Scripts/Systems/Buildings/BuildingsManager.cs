@@ -101,7 +101,7 @@ public class BuildingsManager
     {
         for (int i = 0; i < mBuildingInfoData._BuildingInfo.Count; i++)
         {
-            Buildings building = new Buildings(mGameController, GetBuildingObject(mBuildingInfoData._BuildingInfo[i]._Meta._PrefabName), mBuildingInfoData._BuildingInfo[i]._Meta._BuildingType);
+            Buildings building = new Buildings(mGameController, mBuildingInfoData._BuildingInfo[i]._Attributes._TimeRequiredInBuilding, mBuildingInfoData._BuildingInfo[i]._Attributes._Capacity, GetBuildingObject(mBuildingInfoData._BuildingInfo[i]._Meta._PrefabName), mBuildingInfoData._BuildingInfo[i]._Meta._BuildingType);
             building.OnBuildingDead += OnBuildingDead;
             mBuildings.Add(building);
         }
@@ -112,7 +112,7 @@ public class BuildingsManager
         float distance = float.MaxValue;
         int index = 0;
         List<Buildings> filteredBuildings = mBuildings.FindAll(b => b._BuildingType == buildingType);
-        for (int i = 0; i < mBuildings.Count; i++)
+        for (int i = 0; i < filteredBuildings.Count; i++)
         {
             if (distance > Vector3.Distance(mBuildings[i]._GameObject.transform.position, toPosition))
             {
@@ -120,7 +120,7 @@ public class BuildingsManager
             }
         }
 
-        return mBuildings[index];
+        return filteredBuildings[index];
     }
 
     public void LateUpdate()

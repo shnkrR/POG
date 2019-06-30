@@ -42,7 +42,7 @@ public class Character
 
     private Buildings mTargetBuilding;
 
-    private float mTimeBetweenStates = 3.0f;
+    private float mMaxIdleTime = 3.0f;
     private float mCurrentStateTime = 0.0f;
 
 #if ENABLE_DEBUG
@@ -162,7 +162,7 @@ public class Character
         eCharacterStates prevCharState = (eCharacterStates)prevState;
         eCharacterStates newCharState = (eCharacterStates)newState;
 
-        //Debug.Log("Prev State: " + prevCharState + " New State: " + newCharState);
+        Debug.Log("Prev State: " + prevCharState + " New State: " + newCharState);
 
         // Trigger new state
         switch (newCharState)
@@ -196,8 +196,11 @@ public class Character
                 break;
 
             case eCharacterStates.Walk:
-                _GameObject.transform.position = WalkTo(mDestinationPosition);
                 if (Vector3.Distance(_GameObject.transform.position, mDestinationPosition) > 0.1f)
+                {
+                    _GameObject.transform.position = WalkTo(mDestinationPosition);
+                }
+                else
                 {
                     mStateMachine.ChangeState((int)eCharacterStates.Idle);
                 }
@@ -210,14 +213,17 @@ public class Character
                 }
                 else
                 {
-                    _GameObject.SetActive(false);
-                    mTargetBuilding.StartTask();
-                    mTargetBuilding.OnBuildingTaskComplete += OnTaskComplete;
+                    if (_GameObject.activeSelf)
+                    {
+                        _GameObject.SetActive(false);
+                        mTargetBuilding.StartTask(this);
+                        mTargetBuilding.OnBuildingTaskComplete += OnTaskComplete;
+                    }
                 }
                 break;
         }
 
-        _Health -= (deltaTime / 20.0f);
+        //_Health -= (deltaTime / 20.0f);
         if (_Health <= 0.0f)
         {
             mStateMachine.ChangeState((int)eCharacterStates.Dead);
@@ -227,7 +233,7 @@ public class Character
             if (currentCharState == eCharacterStates.Idle)
             {
                 mCurrentStateTime += deltaTime;
-                if (mCurrentStateTime >= mTimeBetweenStates)
+                if (mCurrentStateTime >= mMaxIdleTime)
                 {
                     int newState = Random.Range(0, (int)eCharacterStates.Dead);
                     mStateMachine.ChangeState(newState);
@@ -255,7 +261,6 @@ public class Character
 
             case eCharacterStates.Work:
                 _GameObject.SetActive(true);
-                mTargetBuilding.OnBuildingTaskComplete -= OnTaskComplete;
                 break;
         }
     }
@@ -295,9 +300,13 @@ public class Character
     #endregion
 
     #region Tasks
-    private void OnTaskComplete()
+    private void OnTaskComplete(Character character)
     {
-
+        mTargetBuilding.OnBuildingTaskComplete -= OnTaskComplete;
+        if (character == this)
+        {
+            mStateMachine.ChangeState((int)eCharacterStates.Idle);
+        }
     }
     #endregion
 

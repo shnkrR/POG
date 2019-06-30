@@ -99,6 +99,7 @@ public class BuildingInfoDataEditor : EditorWindow
             {
                 EditorGUILayout.LabelField("Meta", EditorStyles.boldLabel);
                 mBuildingInfoData._BuildingInfo[i]._Meta._PrefabName = EditorGUILayout.TextField("Prefab Name: ", mBuildingInfoData._BuildingInfo[i]._Meta._PrefabName);
+                mBuildingInfoData._BuildingInfo[i]._Meta._BuildingType = (eBuildingType)EditorGUILayout.EnumPopup("Building Type: ", mBuildingInfoData._BuildingInfo[i]._Meta._BuildingType);
 
                 EditorGUILayout.Space();
 

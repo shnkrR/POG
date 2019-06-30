@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 
 public enum eBuildingType
@@ -12,7 +14,7 @@ public enum eBuildingType
 public class Buildings
 {
     public MyDelegate.DelegateVoidSingleParam<Buildings> OnBuildingDead;
-    public MyDelegate.DelegateVoid OnBuildingTaskComplete;
+    public MyDelegate.DelegateVoidSingleParam<Character> OnBuildingTaskComplete;
 
 
     // Attributes
@@ -35,6 +37,8 @@ public class Buildings
     // Game Controller
     private GameController mGameController;
 
+    private Dictionary<Character, float> mCharacterTaskTime;
+
 
     #region Constructors
     /// <summary>
@@ -54,6 +58,8 @@ public class Buildings
         mPosition = _GameObject.transform.position;
         mRotation = new Vector3(0.0f, Random.Range(30.0f, 60.0f), 0.0f);
         _GameObject.transform.Rotate(mRotation);
+
+        _BuildingType = buildingType;
     }
 
 
@@ -75,12 +81,30 @@ public class Buildings
         mPosition = _GameObject.transform.position;
         mRotation = new Vector3(0.0f, Random.Range(30.0f, 60.0f), 0.0f);
         _GameObject.transform.Rotate(mRotation);
+
+        _BuildingType = buildingType;
     }
     #endregion
 
     public void LateUpdate()
     {
-        
+        if (mCharacterTaskTime != null && mCharacterTaskTime.Count > 0)
+        {
+            foreach(KeyValuePair<Character, float> pair in mCharacterTaskTime.ToList())
+            {
+                if (pair.Value >= _TimeRequiredInBuilding)
+                {
+                    mCharacterTaskTime.Remove(pair.Key);
+                    if (OnBuildingTaskComplete != null)
+                        OnBuildingTaskComplete(pair.Key);
+                    break;
+                }
+                else
+                {
+                    mCharacterTaskTime[pair.Key] += Time.deltaTime;
+                }
+            }
+        }
     }
 
     private Vector3 GetRandomPosition()
@@ -91,9 +115,12 @@ public class Buildings
     }
 
     #region Tasks
-    public void StartTask()
+    public void StartTask(Character character)
     {
+        if (mCharacterTaskTime == null)
+            mCharacterTaskTime = new Dictionary<Character, float>();
 
+        mCharacterTaskTime.Add(character, 0);
     }
     #endregion
 
